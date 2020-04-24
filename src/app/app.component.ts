@@ -37,13 +37,36 @@ export class AppComponent {
 
   ngOnInit(): void {
   }
+  
+  getMe(){
+    this.http.get('https://localhost/tellspace-server/auth/me').subscribe(
+      (res) => {
+        alert('You got me. Check console.')
+        console.log(res)
+      },
+      (err) => alert('Error getting me!!!')
+    )
+  }
+
+  getServerHealthCheck() {
+    this.http.get<Tokens>(`https://localhost/tellspace-server/`).subscribe(
+      (res) => {
+        alert('TELLSPACE SERVER ALIVE')
+      },
+      (error: Response)=> console.log(error)
+      ); 
+  }
 
   getAccessTokens(){
     
-    this.http.get<Tokens>(`http://localhost:5000/auth/login/${this.idToken}`).subscribe(
+    this.http.get<Tokens>(`https://localhost/tellspace-server/auth/login/${this.idToken}`).subscribe(
       (res: Tokens) => {
-        this.tokens = res
-      },(error: Response)=> alert(`Unable to get access tokens. Status ${error.status}`));
+        this.tokens = res;
+        sessionStorage.setItem('access_token', res.access_token)
+      },(error: Response)=> {
+        console.log(error)
+        alert('Cannot get Tokens' + error.status)
+      });
   }
 
   signInWithGoogle(): void {
