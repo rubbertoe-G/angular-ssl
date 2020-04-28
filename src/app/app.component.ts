@@ -41,8 +41,18 @@ export class AppComponent {
   getMe(){
     this.http.get('https://localhost/tellspace-server/auth/me').subscribe(
       (res) => {
-        alert('You got me. Check console.')
         console.log(res)
+        alert('You got me. Check console.')
+      },
+      (err) => alert('Error getting me!!!')
+    )
+  }
+
+  getDocs(){
+    this.http.get('https://localhost/tellspace-server/documents/').subscribe(
+      (res) => {
+        console.log(res)
+        alert('You got documents. Check console')
       },
       (err) => alert('Error getting me!!!')
     )
